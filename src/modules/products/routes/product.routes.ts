@@ -5,6 +5,7 @@ import ProductController from "../controllers/ProductController";
 const routes = Router();
 
 routes.get("/", ProductController.index);
+
 routes.post(
   "/",
   celebrate({
