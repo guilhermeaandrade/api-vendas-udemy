@@ -1,5 +1,5 @@
 import { getCustomRepository } from "typeorm";
-import { ProductRepository } from "../typeorm/repositories/ProductRepository";
+import ProductRepository from "../typeorm/repositories/ProductRepository";
 import { ShowProductsService } from "./ShowProductService";
 
 interface IDeleteRequest {

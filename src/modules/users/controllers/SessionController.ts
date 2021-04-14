@@ -6,8 +6,7 @@ class SessionController {
     const { email, password } = request.body as IRequest;
     const service = new CreateSessionService();
     const { user, token } = await service.execute({ email, password });
-    console.log(token);
-    return response.json(user);
+    return response.json({ user, token });
   }
 }
 
