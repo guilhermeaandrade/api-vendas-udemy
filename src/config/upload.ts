@@ -30,14 +30,14 @@ const uploader: IUploadConfig = {
         const fileHash = crypto.randomBytes(10).toString("hex");
         const filename = `${fileHash}-${file.originalname}`;
         callback(null, filename);
-      }
+      },
     }),
   },
   config: {
     aws: {
-      bucket: "api-vendas"
-    }
-  }
-}
+      bucket: "api-vendas",
+    },
+  },
+};
 
 export default uploader;

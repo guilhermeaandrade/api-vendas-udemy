@@ -4,7 +4,7 @@ import Product from "../typeorm/entities/Product";
 import ProductRepository from "../typeorm/repositories/ProductRepository";
 import { ShowProductsService } from "./ShowProductService";
 
-interface IUpdateRequest {
+interface IRequest {
   id: string;
   name: string;
   price: number;
@@ -12,7 +12,12 @@ interface IUpdateRequest {
 }
 
 export class UpdateProductsService {
-  public async execute({ id, name, price, quantity }: IUpdateRequest): Promise<Product> {
+  public async execute({
+    id,
+    name,
+    price,
+    quantity,
+  }: IRequest): Promise<Product> {
     const productRepository = getCustomRepository(ProductRepository);
     const product = await new ShowProductsService().execute({ id });
 

@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import { celebrate, Segments, Joi } from 'celebrate';
-import multer from 'multer';
-import uploadConfig from '@config/upload';
+import { Router } from "express";
+import { celebrate, Segments, Joi } from "celebrate";
+import multer from "multer";
+import uploadConfig from "@config/upload";
 
-import isAuthenticated from '@shared/http/middlewares/isAuthenticated';
+import isAuthenticated from "@shared/http/middlewares/isAuthenticated";
 import UserController from "../controllers/UserController";
 import UserAvatarController from "../controllers/UserAvatarController";
 
@@ -19,9 +19,9 @@ routes.post(
       name: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-    }
+    },
   }),
-  UserController.create
+  UserController.create,
 );
 
 routes.patch(

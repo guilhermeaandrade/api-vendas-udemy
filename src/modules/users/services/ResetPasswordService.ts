@@ -21,11 +21,15 @@ export class ResetPasswordService {
     const user = await userRepository.findById(userToken.userId);
     if (!user) throw new AppError("User does not exists.", 404);
 
-    const lastUserToken = await userTokenRepository.findLastTokenByUser(user.id);
-    if (lastUserToken?.id !== userToken.id || userToken.isUsed) throw new AppError("Invalid token", 400);
+    const lastUserToken = await userTokenRepository.findLastTokenByUser(
+      user.id,
+    );
+    if (lastUserToken?.id !== userToken.id || userToken.isUsed)
+      throw new AppError("Invalid token", 400);
 
     const compareDate = addHours(userToken.created_at, 2);
-    if (isAfter(Date.now(), compareDate)) throw new AppError("Token expired.", 400);
+    if (isAfter(Date.now(), compareDate))
+      throw new AppError("Token expired.", 400);
 
     user.password = await hash(password, 8);
     userToken.isUsed = true;

@@ -6,7 +6,7 @@ import { errors } from "celebrate";
 import routes from "./routes";
 import AppError from "@shared/errors/AppError";
 import "@shared/typeorm";
-import uploadConfig from '@config/upload';
+import uploadConfig from "@config/upload";
 
 const app = express();
 
@@ -17,7 +17,12 @@ app.use("/files", express.static(uploadConfig.directory));
 app.use(routes);
 app.use(errors());
 app.use(
-  (error: Error, _request: Request, response: Response, _next: NextFunction) => {
+  (
+    error: Error,
+    _request: Request,
+    response: Response,
+    _next: NextFunction,
+  ) => {
     if (error instanceof AppError) {
       return response.status(error.statusCode).json({
         status: "error",
@@ -34,5 +39,5 @@ app.use(
 );
 
 app.listen(3333, () => {
-  console.log('Server started on port 3333! 🏆');
+  console.log("Server started on port 3333! 🏆");
 });

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateProductService, ICreateRequest } from "../services/CreateProductService";
+import { CreateProductService } from "../services/CreateProductService";
 import { DeleteProductsService } from "../services/DeleteProductService";
 import { ListProductsService } from "../services/ListProductService";
 import { ShowProductsService } from "../services/ShowProductService";
@@ -32,7 +32,7 @@ class ProductController {
   }
 
   async create(request: Request, response: Response): Promise<Response> {
-    const { name, price, quantity } = request.body as ICreateRequest;
+    const { name, price, quantity } = request.body;
 
     const service = new CreateProductService();
     const product = await service.execute({ name, price, quantity });
@@ -42,7 +42,7 @@ class ProductController {
 
   async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const { name, price, quantity } = request.body as ICreateRequest;
+    const { name, price, quantity } = request.body;
 
     const service = new UpdateProductsService();
     const product = await service.execute({ id, name, price, quantity });

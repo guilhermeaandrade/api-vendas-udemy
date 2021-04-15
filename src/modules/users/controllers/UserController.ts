@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { CreateUserService, ICreateRequest } from "../services/CreateUserService";
-import { ListUsersService } from "../services/ListUsersService";
+import { CreateUserService } from "../services/CreateUserService";
+import { ListUserService } from "../services/ListUserService";
 
 class UserController {
   async index(_request: Request, response: Response): Promise<Response> {
-    const service = new ListUsersService();
+    const service = new ListUserService();
     const users = await service.execute();
 
     return response.json(users);
   }
 
   async create(request: Request, response: Response): Promise<Response> {
-    const { name, email, password } = request.body as ICreateRequest;
+    const { name, email, password } = request.body;
 
     const service = new CreateUserService();
     const user = await service.execute({ name, email, password });

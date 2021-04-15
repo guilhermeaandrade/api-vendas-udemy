@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("users")
-export default class User {
+@Entity("customers")
+export default class Customer {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -16,12 +16,6 @@ export default class User {
 
   @Column()
   email: string;
-
-  @Column()
-  password: string;
-
-  @Column()
-  avatar?: string;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;

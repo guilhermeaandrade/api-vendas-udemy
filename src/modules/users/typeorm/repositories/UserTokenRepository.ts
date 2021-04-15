@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from 'typeorm';
-import UserToken from '../entities/UserToken';
+import { EntityRepository, Repository } from "typeorm";
+import UserToken from "../entities/UserToken";
 
 @EntityRepository(UserToken)
 export default class UserTokenRepository extends Repository<UserToken> {
@@ -11,11 +11,13 @@ export default class UserTokenRepository extends Repository<UserToken> {
     return userToken;
   }
 
-  public async findLastTokenByUser(userId: string): Promise<UserToken | undefined> {
+  public async findLastTokenByUser(
+    userId: string,
+  ): Promise<UserToken | undefined> {
     const userTokens = await this.find({
       where: { userId },
-      order: { created_at: 'DESC' },
-      take: 1
+      order: { created_at: "DESC" },
+      take: 1,
     });
 
     if (userTokens.length) return userTokens[0];
