@@ -1,17 +1,22 @@
 import "reflect-metadata";
+import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import cors from "cors";
 import { errors } from "celebrate";
+import { pagination } from "typeorm-pagination";
 import routes from "./routes";
 import AppError from "@shared/errors/AppError";
 import "@shared/typeorm";
 import uploadConfig from "@config/upload";
+import rateLimiter from "@shared/http/middlewares/rateLimiter";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(rateLimiter);
+app.use(pagination);
 
 app.use("/files", express.static(uploadConfig.directory));
 app.use(routes);
@@ -29,7 +34,6 @@ app.use(
         message: error.message,
       });
     }
-    console.log(error);
 
     return response.status(500).json({
       status: "error",
@@ -38,6 +42,7 @@ app.use(
   },
 );
 
-app.listen(3333, () => {
-  console.log("Server started on port 3333! 🏆");
+const port = process.env.APP_PORT || 3333;
+app.listen(port, () => {
+  console.log(`Server started on port ${port}! 🏆`);
 });

@@ -3,6 +3,7 @@ import {
   UpdateUserAvatarService,
   IRequest,
 } from "../services/UpdateUserAvatarService";
+import { classToClass } from "class-transformer";
 
 class UserAvatarController {
   async update(request: Request, response: Response): Promise<Response> {
@@ -14,7 +15,7 @@ class UserAvatarController {
     const service = new UpdateUserAvatarService();
     const user = await service.execute(params);
 
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 }
 

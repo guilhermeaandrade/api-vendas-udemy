@@ -1,3 +1,8 @@
+import redisCache from "@shared/cache/RedisCache";
+import {
+  REDIS_CACHE_PRODUCT_LIST,
+  REDIS_CACHE_PRODUCT_SHOW,
+} from "@shared/constants";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Product from "../typeorm/entities/Product";
@@ -30,7 +35,13 @@ export class UpdateProductsService {
     product.quantity = quantity;
 
     await productRepository.save(product);
+    await this.invalidateCache();
 
     return product;
+  }
+
+  private async invalidateCache(): Promise<void> {
+    await redisCache.invalidate(REDIS_CACHE_PRODUCT_LIST);
+    await redisCache.invalidate(REDIS_CACHE_PRODUCT_SHOW);
   }
 }

@@ -5,7 +5,6 @@ import { celebrate, Segments } from "celebrate";
 import Joi from "joi";
 
 const ordersRouter = Router();
-
 ordersRouter.use(isAuthenticated);
 
 ordersRouter.get(

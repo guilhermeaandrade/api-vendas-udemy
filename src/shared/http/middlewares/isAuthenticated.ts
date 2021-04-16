@@ -4,6 +4,7 @@ import authConfig from "@config/auth";
 import { verify } from "jsonwebtoken";
 import { getCustomRepository } from "typeorm";
 import UserRepository from "@modules/users/typeorm/repositories/UserRepository";
+import { defaultSecret } from "@shared/constants";
 
 interface ITokenPayload {
   iat: number;
@@ -21,7 +22,7 @@ export default async function isAuthenticated(
 
   const [, token] = authHeader.split(" ");
   try {
-    const decodedToekn = verify(token, authConfig.jwt.secret);
+    const decodedToekn = verify(token, authConfig.jwt.secret || defaultSecret);
     const { sub } = decodedToekn as ITokenPayload;
 
     const userRepository = getCustomRepository(UserRepository);

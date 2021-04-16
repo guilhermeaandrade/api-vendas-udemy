@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
 import ProductController from "../controllers/ProductController";
+import isAuthenticated from "@shared/http/middlewares/isAuthenticated";
 
-const routes = Router();
+const productsRouter = Router();
+productsRouter.use(isAuthenticated);
 
-routes.get("/", ProductController.index);
+productsRouter.get("/", ProductController.index);
 
-routes.post(
+productsRouter.post(
   "/",
   celebrate({
     [Segments.BODY]: {
@@ -18,7 +20,7 @@ routes.post(
   ProductController.create,
 );
 
-routes.get(
+productsRouter.get(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
@@ -28,7 +30,7 @@ routes.get(
   ProductController.show,
 );
 
-routes.put(
+productsRouter.put(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
@@ -43,7 +45,7 @@ routes.put(
   ProductController.update,
 );
 
-routes.delete(
+productsRouter.delete(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
@@ -53,4 +55,4 @@ routes.delete(
   ProductController.delete,
 );
 
-export default routes;
+export default productsRouter;

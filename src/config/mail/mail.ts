@@ -9,7 +9,7 @@ interface IMailConfig {
 }
 
 export default {
-  driver: process.env.MAIL_DRIVER || "ethereal",
+  driver: process.env.APP_MAIL_DRIVER || "ethereal",
 
   defaults: {
     from: {

@@ -35,7 +35,7 @@ const uploader: IUploadConfig = {
   },
   config: {
     aws: {
-      bucket: "api-vendas",
+      bucket: process.env.APP_AWS_BUCKET || "api-vendas",
     },
   },
 };

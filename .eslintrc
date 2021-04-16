@@ -5,10 +5,6 @@
     "@typescript-eslint",
     "prettier"
   ],
-  "parserOptions": {
-    "project": "tsconfig.json",
-    "sourceType": "module"
-  },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
