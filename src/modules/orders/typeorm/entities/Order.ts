@@ -1,31 +1,28 @@
-import OrdersProducts from "@modules/orders/typeorm/entities/OrdersProducts";
 import {
-  Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import Customer from "@modules/customers/typeorm/entities/Customer";
+import OrdersProducts from "./OrdersProducts";
 
-@Entity("products")
-export default class Product {
+@Entity("orders")
+export default class Order {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
-  name: string;
+  @ManyToOne(() => Customer)
+  @JoinColumn({ name: "customer_id" })
+  customer: Customer;
 
-  @OneToMany(() => OrdersProducts, orderProduct => orderProduct.product, {
+  @OneToMany(() => OrdersProducts, orderProduct => orderProduct.order, {
     cascade: true,
   })
   orderProducts: OrdersProducts[];
-
-  @Column("decimal")
-  price: number;
-
-  @Column("int")
-  quantity: number;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;

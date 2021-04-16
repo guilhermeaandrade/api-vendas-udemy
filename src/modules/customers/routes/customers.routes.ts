@@ -2,12 +2,12 @@ import isAuthenticated from "@shared/http/middlewares/isAuthenticated";
 import { celebrate, Segments } from "celebrate";
 import { Router } from "express";
 import Joi from "joi";
-import CustomersController from "../controllers/CustomersController";
+import CustomerController from "../controllers/CustomerController";
 
 const customersRouter = Router();
 
 customersRouter.use(isAuthenticated);
-customersRouter.get("/", CustomersController.index);
+customersRouter.get("/", CustomerController.index);
 
 customersRouter.get(
   "/:id",
@@ -16,7 +16,7 @@ customersRouter.get(
       id: Joi.string().uuid().required(),
     },
   }),
-  CustomersController.show,
+  CustomerController.show,
 );
 
 customersRouter.post(
@@ -27,7 +27,7 @@ customersRouter.post(
       email: Joi.string().email().required(),
     },
   }),
-  CustomersController.create,
+  CustomerController.create,
 );
 
 customersRouter.put(
@@ -41,7 +41,7 @@ customersRouter.put(
       id: Joi.string().uuid().required(),
     },
   }),
-  CustomersController.update,
+  CustomerController.update,
 );
 
 customersRouter.delete(
@@ -51,7 +51,7 @@ customersRouter.delete(
       id: Joi.string().uuid().required(),
     },
   }),
-  CustomersController.delete,
+  CustomerController.delete,
 );
 
 export default customersRouter;

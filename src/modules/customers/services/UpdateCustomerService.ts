@@ -1,7 +1,7 @@
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Customer from "../typeorm/entities/Customer";
-import CustomersRepository from "../typeorm/repositories/CustomerRepository";
+import CustomerRepository from "../typeorm/repositories/CustomerRepository";
 
 interface IRequest {
   id: string;
@@ -11,11 +11,11 @@ interface IRequest {
 
 export default class UpdateCustomerService {
   public async execute({ id, name, email }: IRequest): Promise<Customer> {
-    const customersRepository = getCustomRepository(CustomersRepository);
-    const customer = await customersRepository.findById(id);
+    const customerRepository = getCustomRepository(CustomerRepository);
+    const customer = await customerRepository.findById(id);
     if (!customer) throw new AppError("Customer not found.", 404);
 
-    const customerExists = await customersRepository.findByEmail(email);
+    const customerExists = await customerRepository.findByEmail(email);
     if (customerExists && email !== customer.email) {
       throw new AppError("There is already one customer with this email.", 404);
     }
@@ -23,7 +23,7 @@ export default class UpdateCustomerService {
     customer.name = name;
     customer.email = email;
 
-    await customersRepository.save(customer);
+    await customerRepository.save(customer);
 
     return customer;
   }

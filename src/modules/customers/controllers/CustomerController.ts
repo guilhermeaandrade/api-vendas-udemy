@@ -5,7 +5,7 @@ import ListCustomerService from "../services/ListCustomerService";
 import ShowCustomerService from "../services/ShowCustomerService";
 import UpdateCustomerService from "../services/UpdateCustomerService";
 
-class CustomersController {
+class CustomerController {
   public async index(_request: Request, response: Response): Promise<Response> {
     const listCustomers = new ListCustomerService();
     const customers = await listCustomers.execute();
@@ -50,4 +50,4 @@ class CustomersController {
   }
 }
 
-export default new CustomersController();
+export default new CustomerController();
