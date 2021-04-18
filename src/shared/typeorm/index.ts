@@ -1,2 +1,2 @@
-import { createConnection } from "typeorm";
-void createConnection();
+import { createConnections } from "typeorm";
+createConnections();
