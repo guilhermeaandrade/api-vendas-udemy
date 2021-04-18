@@ -17,10 +17,10 @@ interface IUploadConfig {
 }
 
 const uploadFolder = path.resolve(__dirname, "..", "..", "uploads");
-const tmpFolder = path.resolve(__dirname, "..", "..", "tmp");
+const tmpFolder = path.resolve(__dirname, "..", "..", "temp");
 
 const uploader: IUploadConfig = {
-  driver: "disk",
+  driver: process.env.APP_STORAGE_DRIVER as "disk" | "s3",
   directory: uploadFolder,
   tmpFolder,
   multer: {
@@ -35,7 +35,7 @@ const uploader: IUploadConfig = {
   },
   config: {
     aws: {
-      bucket: process.env.APP_AWS_BUCKET || "api-vendas",
+      bucket: process.env.APP_AWS_BUCKET || "api-vendas-udemy",
     },
   },
 };

@@ -6,7 +6,6 @@ import redis from "redis";
 const redisClient = redis.createClient({
   host: process.env.APP_REDIS_HOST,
   port: Number(process.env.APP_REDIS_PORT),
-  password: process.env.APP_REDIS_PASSWORD,
 });
 
 const limiter = new RateLimiterRedis({

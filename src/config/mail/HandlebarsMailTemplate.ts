@@ -1,14 +1,6 @@
 import handlebars from "handlebars";
 import fs from "fs";
-
-export interface ITemplateVariable {
-  [key: string]: string | number;
-}
-
-export interface IParseMailTemplate {
-  file: string;
-  variables: ITemplateVariable;
-}
+import { IParseMailTemplate } from "./mail";
 
 export default class HandlebarsMailTemplate {
   public async parse({ file, variables }: IParseMailTemplate): Promise<string> {
