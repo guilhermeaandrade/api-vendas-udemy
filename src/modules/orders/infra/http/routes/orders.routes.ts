@@ -1,11 +1,13 @@
 import { Router } from "express";
+import { container } from "tsyringe";
 import OrderController from "../controllers/OrderController";
-import isAuthenticated from "@shared/infra/http/middlewares/isAuthenticated";
 import { celebrate, Segments } from "celebrate";
 import Joi from "joi";
+import Authenticate from "@shared/infra/http/middlewares/Authenticate";
 
 const ordersRouter = Router();
-ordersRouter.use(isAuthenticated);
+const authenticate = container.resolve(Authenticate);
+ordersRouter.use(authenticate.isAuthenticated);
 
 ordersRouter.get(
   "/:id",
@@ -22,7 +24,6 @@ ordersRouter.post(
   celebrate({
     [Segments.BODY]: {
       customerId: Joi.string().uuid().required(),
-      // products: Joi.required(),
       products: Joi.array().items({
         id: Joi.string().required(),
         quantity: Joi.number().integer().positive().required(),

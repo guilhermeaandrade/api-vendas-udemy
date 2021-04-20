@@ -1,16 +1,17 @@
 import { Router } from "express";
 import { celebrate, Segments, Joi } from "celebrate";
+import { container } from "tsyringe";
 import multer from "multer";
 import uploadConfig from "@config/upload";
-
-import isAuthenticated from "@shared/infra/http/middlewares/isAuthenticated";
+import Authenticate from "@shared/infra/http/middlewares/Authenticate";
 import UserController from "../controllers/UserController";
 import UserAvatarController from "../controllers/UserAvatarController";
 
 const routes = Router();
 const upload = multer(uploadConfig.multer);
+const authenticate = container.resolve(Authenticate);
 
-routes.get("/", isAuthenticated, UserController.index);
+routes.get("/", authenticate.isAuthenticated, UserController.index);
 
 routes.post(
   "/",
@@ -26,7 +27,7 @@ routes.post(
 
 routes.patch(
   "/avatar",
-  isAuthenticated,
+  authenticate.isAuthenticated,
   upload.single("avatar"),
   UserAvatarController.update,
 );

@@ -1,6 +1,7 @@
 import { ICreateProduct } from "@modules/products/domain/models/ICreateProduct";
 import { IFindProduct } from "@modules/products/domain/models/IFindProduct";
 import { IProduct } from "@modules/products/domain/models/IProduct";
+import { IUpdateQuantityProduct } from "@modules/products/domain/models/IUpdateQuantityProduct";
 import { IProductRepository } from "@modules/products/domain/repositories/IProductRepository";
 import { getRepository, In, Repository } from "typeorm";
 import Product from "../entities/Product";
@@ -14,6 +15,10 @@ export default class ProductRepository implements IProductRepository {
 
   public async listProducts(): Promise<IProduct[]> {
     return await this.ormRepository.find();
+  }
+
+  public async updateQuantity(items: IUpdateQuantityProduct[]): Promise<void> {
+    await this.ormRepository.save(items);
   }
 
   public async remove(product: IProduct): Promise<void> {

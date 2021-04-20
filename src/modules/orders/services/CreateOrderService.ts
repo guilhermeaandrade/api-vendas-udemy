@@ -7,16 +7,10 @@ import AppError from "@shared/errors/AppError";
 import { IOrder } from "../domain/models/IOrder";
 import { IOrderRepository } from "../domain/respositories/IOrderRepository";
 import { EntityManager, getManager } from "typeorm";
-
-interface IOrderProductRequest {
-  id: string;
-  quantity: number;
-}
-
-interface IRequest {
-  customerId: string;
-  products: IOrderProductRequest[];
-}
+import {
+  ICreateOrderRequest,
+  IOrderProductRequest,
+} from "../domain/models/ICreateOrder";
 
 @injectable()
 class CreateOrderService {
@@ -29,7 +23,10 @@ class CreateOrderService {
     private customerRepository: ICustomerRepository,
   ) {}
 
-  public async execute({ customerId, products }: IRequest): Promise<IOrder> {
+  public async execute({
+    customerId,
+    products,
+  }: ICreateOrderRequest): Promise<IOrder> {
     const entityManager = getManager();
 
     const customer = await this.validateCustomer(customerId);
@@ -56,7 +53,7 @@ class CreateOrderService {
           product.quantity,
       }));
 
-      // await this.productRepository.save(updatedProductQuantity);
+      await this.productRepository.updateQuantity(updatedProductQuantity);
 
       return order;
     });
