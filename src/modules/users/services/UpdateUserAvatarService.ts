@@ -1,22 +1,24 @@
-import path from "path";
-import fs from "fs";
-import { getCustomRepository } from "typeorm";
-import User from "../typeorm/entities/User";
-import UserRepository from "../typeorm/repositories/UserRepository";
+import User from "../infra/typeorm/entities/User";
 import uploadConfig from "@config/upload";
 import AppError from "@shared/errors/AppError";
 import diskStorageProvider from "@shared/providers/StorageProvider/DiskStorageProvider";
 import s3StorageProvider from "@shared/providers/StorageProvider/S3StorageProvider";
+import { inject, injectable } from "tsyringe";
+import { IUserRepository } from "../domain/repositories/IUserRepository";
 
 export interface IRequest {
   userId: string;
   avatarFilename: string;
 }
 
-export class UpdateUserAvatarService {
+@injectable()
+class UpdateUserAvatarService {
+  constructor(
+    @inject("UserRepository") private userRepository: IUserRepository,
+  ) {}
+
   public async execute({ userId, avatarFilename }: IRequest): Promise<User> {
-    const userRepository = getCustomRepository(UserRepository);
-    const user = await userRepository.findById(userId);
+    const user = await this.userRepository.findById(userId);
     if (!user) throw new AppError("User not found", 404);
 
     let filename = "";
@@ -33,8 +35,10 @@ export class UpdateUserAvatarService {
     }
 
     user.avatar = filename;
-    await userRepository.save(user);
+    await this.userRepository.save(user);
 
     return user;
   }
 }
+
+export default UpdateUserAvatarService;

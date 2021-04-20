@@ -1,33 +1,39 @@
-import Customer from "@modules/customers/typeorm/entities/Customer";
-import CustomerRepository from "@modules/customers/typeorm/repositories/CustomerRepository";
-import Product from "@modules/products/typeorm/entities/Product";
-import ProductRepository from "@modules/products/typeorm/repositories/ProductRepository";
+import { inject, injectable } from "tsyringe";
+import { ICustomer } from "@modules/customers/domain/models/ICustomer";
+import { ICustomerRepository } from "@modules/customers/domain/repositories/ICustomerRepository";
+import { IProduct } from "@modules/products/domain/models/IProduct";
+import { IProductRepository } from "@modules/products/domain/repositories/IProductRepository";
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository, getManager } from "typeorm";
-import Order from "../typeorm/entities/Order";
-import OrderRepository from "../typeorm/repositories/OrderRepository";
+import { IOrder } from "../domain/models/IOrder";
+import { IOrderRepository } from "../domain/respositories/IOrderRepository";
+import { EntityManager, getManager } from "typeorm";
 
-interface IProduct {
+interface IOrderProductRequest {
   id: string;
   quantity: number;
 }
 
 interface IRequest {
   customerId: string;
-  products: IProduct[];
+  products: IOrderProductRequest[];
 }
 
-export default class CreateOrderService {
-  public async execute({ customerId, products }: IRequest): Promise<Order> {
-    const orderRepository = getCustomRepository(OrderRepository);
-    const productRepository = getCustomRepository(ProductRepository);
+@injectable()
+class CreateOrderService {
+  constructor(
+    @inject("OrderRepository")
+    private orderRepository: IOrderRepository,
+    @inject("ProductRepository")
+    private productRepository: IProductRepository,
+    @inject("CustomerRepository")
+    private customerRepository: ICustomerRepository,
+  ) {}
+
+  public async execute({ customerId, products }: IRequest): Promise<IOrder> {
     const entityManager = getManager();
 
     const customer = await this.validateCustomer(customerId);
-    const existsProducts = await this.validateProducts(
-      products,
-      productRepository,
-    );
+    const existsProducts = await this.validateProducts(products);
     this.validateProductQuantity(products, existsProducts);
 
     const serializedProducts = products.map(product => ({
@@ -36,8 +42,8 @@ export default class CreateOrderService {
       price: existsProducts.filter(p => p.id === product.id)[0].price,
     }));
 
-    return await entityManager.transaction(async manager => {
-      const order = await orderRepository.createOrder({
+    return await entityManager.transaction(async (_manager: EntityManager) => {
+      const order = await this.orderRepository.createOrder({
         customer,
         products: serializedProducts,
       });
@@ -50,15 +56,14 @@ export default class CreateOrderService {
           product.quantity,
       }));
 
-      await productRepository.save(updatedProductQuantity);
+      // await this.productRepository.save(updatedProductQuantity);
 
       return order;
     });
   }
 
-  private async validateCustomer(customerId: string): Promise<Customer> {
-    const customerRepository = getCustomRepository(CustomerRepository);
-    const customer = await customerRepository.findById(customerId);
+  private async validateCustomer(customerId: string): Promise<ICustomer> {
+    const customer = await this.customerRepository.findById(customerId);
     if (!customer) {
       throw new AppError("Could not find any customer with the given id.", 404);
     }
@@ -67,10 +72,9 @@ export default class CreateOrderService {
   }
 
   private async validateProducts(
-    iProducts: IProduct[],
-    repository: ProductRepository,
-  ): Promise<Product[]> {
-    const products = await repository.findAllByIds(iProducts);
+    iProducts: IOrderProductRequest[],
+  ): Promise<IProduct[]> {
+    const products = await this.productRepository.findAllByIds(iProducts);
     if (!products.length) {
       throw new AppError(
         "Could not find any products with the given ids.",
@@ -94,8 +98,8 @@ export default class CreateOrderService {
   }
 
   private validateProductQuantity(
-    iProducts: IProduct[],
-    products: Product[],
+    iProducts: IOrderProductRequest[],
+    products: IProduct[],
   ): void {
     const quantityAvailable = iProducts.filter(
       iProduct =>
@@ -110,3 +114,5 @@ export default class CreateOrderService {
     }
   }
 }
+
+export default CreateOrderService;

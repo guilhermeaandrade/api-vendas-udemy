@@ -1,20 +1,23 @@
+import { inject, injectable } from "tsyringe";
 import redisCache from "@shared/cache/RedisCache";
 import { REDIS_CACHE_PRODUCT_SHOW } from "@shared/constants";
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
-import Product from "../typeorm/entities/Product";
-import ProductRepository from "../typeorm/repositories/ProductRepository";
+import Product from "../infra/typeorm/entities/Product";
+import { IProductRepository } from "../domain/repositories/IProductRepository";
+import { IFindProduct } from "../domain/models/IFindProduct";
+import { IProduct } from "../domain/models/IProduct";
 
-interface IRequest {
-  id: string;
-}
+@injectable()
+class ShowProductService {
+  constructor(
+    @inject("ProductRepository")
+    private productRepository: IProductRepository,
+  ) {}
 
-export class ShowProductsService {
-  public async execute({ id }: IRequest): Promise<Product> {
-    const productRepository = getCustomRepository(ProductRepository);
+  public async execute({ id }: IFindProduct): Promise<IProduct> {
     let product = await redisCache.recover<Product>(REDIS_CACHE_PRODUCT_SHOW);
     if (!product) {
-      product = await productRepository.findOne(id);
+      product = await this.productRepository.findById(id);
       if (!product) {
         throw new AppError("Product not found.", 404);
       }
@@ -25,3 +28,5 @@ export class ShowProductsService {
     return product;
   }
 }
+
+export default ShowProductService;

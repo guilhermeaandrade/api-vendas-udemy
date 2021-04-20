@@ -1,16 +1,18 @@
-import { IPaginate } from "@shared/types/paginate";
-import { getCustomRepository } from "typeorm";
-import Customer from "../typeorm/entities/Customer";
-import CustomerRepository from "../typeorm/repositories/CustomerRepository";
+import { inject, injectable } from "tsyringe";
+import { ICustomerPaginate } from "../domain/models/ICustomerPaginate";
+import { ICustomerRepository } from "../domain/repositories/ICustomerRepository";
 
-interface ICustomersPaginate extends IPaginate {
-  data: Customer[];
-}
+@injectable()
+class ListCustomerService {
+  constructor(
+    @inject("CustomerRepository")
+    private customerRepository: ICustomerRepository,
+  ) {}
 
-export default class ListCustomerService {
-  public async execute(): Promise<ICustomersPaginate> {
-    const customerRepository = getCustomRepository(CustomerRepository);
-    const customers = await customerRepository.createQueryBuilder().paginate();
-    return customers as ICustomersPaginate;
+  public async execute(): Promise<ICustomerPaginate> {
+    const customers = await this.customerRepository.listCustomers();
+    return customers;
   }
 }
+
+export default ListCustomerService;
