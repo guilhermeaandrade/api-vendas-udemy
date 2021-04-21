@@ -11,7 +11,7 @@ export default class OrderRepository implements IOrderRepository {
     this.ormRepository = getRepository(Order);
   }
 
-  public async findById(id: string): Promise<Order | undefined> {
+  public async findById(id: string): Promise<IOrder | undefined> {
     const order = await this.ormRepository.findOne(id, {
       relations: ["orderProducts", "customer"],
     });

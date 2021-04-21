@@ -19,12 +19,13 @@ melhores práticas na construção do projeto, com o uso das tecnologias TypeScr
 - [tsyringe](https://github.com/microsoft/tsyringe): Lib de injeção de dependencias.
 - [uuidv4](https://github.com/thenativeweb/uuidv4#readme): uuid.
 
-:warning: Durante o desenvolvimento irei atualizando a lista de tecnologia
+:warning: Durante o desenvolvimento irei atualizando a lista de tecnologias
 ### Base da Aplicação.
 
 Requisitos funcionais:
+
     [] 100% de cobertura de testes nos services da aplicação.
-    [] Tratamento de exceções global
+    [x] Tratamento de exceções global
 
 Requisitos Não Funcionais:
     - Framework da API - Express

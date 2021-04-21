@@ -9,9 +9,10 @@ import {
 } from "typeorm";
 import Product from "@modules/products/infra/typeorm/entities/Product";
 import Order from "./Order";
+import { IOrderProduct } from "@modules/orders/domain/models/IOrderProduct";
 
 @Entity("orders_products")
-export default class OrdersProducts {
+export default class OrdersProducts implements IOrderProduct {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 

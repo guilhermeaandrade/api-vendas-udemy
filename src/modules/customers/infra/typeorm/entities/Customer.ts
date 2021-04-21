@@ -1,4 +1,3 @@
-import Order from "@modules/orders/infra/typeorm/entities/Order";
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +7,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { ICustomer } from "@modules/customers/domain/models/ICustomer";
+import Order from "@modules/orders/infra/typeorm/entities/Order";
 
 @Entity("customers")
 export default class Customer implements ICustomer {
