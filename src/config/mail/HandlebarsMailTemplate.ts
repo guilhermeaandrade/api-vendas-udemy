@@ -1,6 +1,6 @@
 import handlebars from "handlebars";
 import fs from "fs";
-import { IParseMailTemplate } from "./mailConfig";
+import { IParseMailTemplate } from "@shared/providers/MailProvider/IMail";
 
 export default class HandlebarsMailTemplate {
   public async parse({ file, variables }: IParseMailTemplate): Promise<string> {

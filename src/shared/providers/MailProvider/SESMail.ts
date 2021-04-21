@@ -1,8 +1,8 @@
 import nodemailer from "nodemailer";
 import aws from "aws-sdk";
 import HandlebarsMailTemplate from "../../../config/mail/HandlebarsMailTemplate";
-import { ISendMail } from "../../../config/mail/mailConfig";
 import mailConfig from "@config/mail/mailConfig";
+import { ISendMail } from "./IMail";
 
 export default class SESMail {
   static async sendMail({

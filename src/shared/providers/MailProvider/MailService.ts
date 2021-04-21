@@ -1,8 +1,8 @@
 import path from "path";
-import mailConfig, { ISendMail } from "@config/mail/mailConfig";
+import mailConfig from "@config/mail/mailConfig";
 import { IUser } from "@modules/users/domain/models/IUser";
 import EtherealMail from "./EtherealMail";
-import { IMail } from "./IMail";
+import { IMail, ISendMail } from "./IMail";
 import SESMail from "./SESMail";
 
 class MailService implements IMail {
