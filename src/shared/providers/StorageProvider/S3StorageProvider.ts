@@ -3,9 +3,9 @@ import aws, { S3 } from "aws-sdk";
 import mime from "mime-types";
 import fs from "fs";
 import path from "path";
-import { Storage } from "./storage";
+import { IStorage } from "./IStorage";
 
-class S3StorageProvider implements Storage {
+class S3StorageProvider implements IStorage {
   private client: S3;
 
   constructor() {

@@ -4,6 +4,7 @@ import { ICreateUser } from "../domain/models/ICreateUser";
 import { inject, injectable } from "tsyringe";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 import { IHashProvider } from "../providers/HashProvider/models/IHashProvider";
+import MailService from "@shared/providers/MailProvider/MailService";
 
 @injectable()
 class CreateUserService {
@@ -12,6 +13,7 @@ class CreateUserService {
     private userRepository: IUserRepository,
     @inject("HashProvider")
     private hashProvider: IHashProvider,
+    @inject("MailService") private mailService: MailService,
   ) {}
 
   public async execute({ name, email, password }: ICreateUser): Promise<User> {
@@ -25,6 +27,8 @@ class CreateUserService {
       email,
       password: hashedPassword,
     });
+
+    await this.mailService.sendWelcome(user);
 
     return user;
   }

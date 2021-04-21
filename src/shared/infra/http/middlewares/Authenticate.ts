@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "@shared/errors/AppError";
 import authConfig from "@config/auth";
-import { verify } from "jsonwebtoken";
-import { defaultSecret } from "@shared/constants";
+import { Secret, verify } from "jsonwebtoken";
 import UserRepository from "@modules/users/infra/typeorm/repositories/UserRepository";
 
 interface ITokenPayload {
@@ -21,7 +20,7 @@ export default async function isAuthenticated(
 
   const [, token] = authHeader.split(" ");
   try {
-    const decodedToekn = verify(token, authConfig.jwt.secret || defaultSecret);
+    const decodedToekn = verify(token, authConfig.jwt.secret as Secret);
     const { sub } = decodedToekn as ITokenPayload;
 
     const userRepository = new UserRepository();

@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
-import HandlebarsMailTemplate from "./HandlebarsMailTemplate";
-import { ISendMail } from "./mail";
-import mailConfig from "@config/mail/mail";
+import HandlebarsMailTemplate from "../../../config/mail/HandlebarsMailTemplate";
+import { ISendMail } from "../../../config/mail/mailConfig";
+import mailConfig from "@config/mail/mailConfig";
 
 export default class EtherealMail {
   static async sendMail({

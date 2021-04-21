@@ -1,4 +1,4 @@
-export interface Storage {
+export interface IStorage {
   saveFile(file: string): Promise<string>;
   deleteFile(file: string): Promise<void>;
 }

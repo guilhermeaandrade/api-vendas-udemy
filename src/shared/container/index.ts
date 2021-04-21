@@ -1,5 +1,6 @@
 import { container } from "tsyringe";
 import "@modules/users/providers";
+import "../providers/MailProvider";
 
 import CustomerRepository from "@modules/customers/infra/typeorm/repositories/CustomerRepository";
 import { ICustomerRepository } from "@modules/customers/domain/repositories/ICustomerRepository";

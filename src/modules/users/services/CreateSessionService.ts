@@ -1,7 +1,6 @@
 import AppError from "@shared/errors/AppError";
-import { sign } from "jsonwebtoken";
+import { Secret, sign } from "jsonwebtoken";
 import authConfig from "@config/auth";
-import { defaultSecret } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 import { IUser } from "../domain/models/IUser";
@@ -37,7 +36,7 @@ class CreateSessionService {
     if (!passwordValid)
       throw new AppError("Incorret email/password combination.", 401);
 
-    const token = sign({}, authConfig.jwt.secret || defaultSecret, {
+    const token = sign({}, authConfig.jwt.secret as Secret, {
       subject: user.id,
       expiresIn: authConfig.jwt.expiresIn,
     });
