@@ -1,7 +1,7 @@
-import AppError from "@shared/errors/AppError";
 import { injectable, inject } from "tsyringe";
 import { IFindCustomer } from "../domain/models/IFindCustomer";
 import { ICustomerRepository } from "../domain/repositories/ICustomerRepository";
+import AppError from "@shared/errors/AppError";
 
 @injectable()
 class DeleteCustomerService {

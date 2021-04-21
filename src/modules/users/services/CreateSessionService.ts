@@ -1,11 +1,11 @@
 import AppError from "@shared/errors/AppError";
-import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from "@config/auth";
 import { defaultSecret } from "@shared/constants";
 import { inject, injectable } from "tsyringe";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 import { IUser } from "../domain/models/IUser";
+import { IHashProvider } from "../providers/HashProvider/models/IHashProvider";
 
 export interface IRequest {
   email: string;
@@ -22,13 +22,18 @@ class CreateSessionService {
   constructor(
     @inject("UserRepository")
     private userRepository: IUserRepository,
+    @inject("HashProvider")
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) throw new AppError("Incorret email/password combination.", 401);
 
-    const passwordValid = await compare(password, user.password);
+    const passwordValid = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
     if (!passwordValid)
       throw new AppError("Incorret email/password combination.", 401);
 
