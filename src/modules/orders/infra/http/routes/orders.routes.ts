@@ -1,13 +1,11 @@
 import { Router } from "express";
-import { container } from "tsyringe";
 import OrderController from "../controllers/OrderController";
 import { celebrate, Segments } from "celebrate";
 import Joi from "joi";
-import Authenticate from "@shared/infra/http/middlewares/Authenticate";
+import isAuthenticated from "@shared/infra/http/middlewares/Authenticate";
 
 const ordersRouter = Router();
-const authenticate = container.resolve(Authenticate);
-ordersRouter.use(authenticate.isAuthenticated);
+ordersRouter.use(isAuthenticated);
 
 ordersRouter.get(
   "/:id",

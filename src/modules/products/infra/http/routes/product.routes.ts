@@ -1,12 +1,10 @@
 import { Router } from "express";
-import { container } from "tsyringe";
 import { celebrate, Joi, Segments } from "celebrate";
 import ProductController from "../controllers/ProductController";
-import Authenticate from "@shared/infra/http/middlewares/Authenticate";
+import isAuthenticated from "@shared/infra/http/middlewares/Authenticate";
 
 const productsRouter = Router();
-const authenticate = container.resolve(Authenticate);
-productsRouter.use(authenticate.isAuthenticated);
+productsRouter.use(isAuthenticated);
 
 productsRouter.get("/", ProductController.index);
 
