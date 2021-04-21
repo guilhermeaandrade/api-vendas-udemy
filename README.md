@@ -152,7 +152,3 @@ Terminal: `yarn typeorm migration:create -n CreateAppointments`
 
 - Execugtar migration: `yarn typeorm migration:run`
 - Rollback desfazer : `yarn typeorm migration:revert`
-
-Ver quais migrations já foram executadas:
-
-`yarn typeorm migration:show`
